@@ -1,0 +1,25 @@
+<mat-toolbar class="toolbar">
+  <a routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page" class="logo-link">
+    <img src="logo.png" alt="HHZ Car Shop Logo" class="logo">
+  </a>
+  <span>HHZ Car Shop</span>
+  <nav>
+    <a mat-fab extended color="primary" routerLink="/cars" routerLinkActive="active"
+      ariaCurrentWhenActive="page"><mat-icon>
+        directions_car</mat-icon>
+      Cars</a>
+    <a mat-fab extended color="primary" routerLink="/test-drives" routerLinkActive="active"
+      ariaCurrentWhenActive="page"><mat-icon>car_rental</mat-icon>
+      Test Drives</a>
+    <a mat-fab extended color="primary" routerLink="/super-car-finder" routerLinkActive="active"
+      ariaCurrentWhenActive="page"><mat-icon>travel_explore</mat-icon>
+      Super Car
+      Finder</a>
+    <a mat-fab extended color="primary" color="primary" routerLink="/merchandise" routerLinkActive="active"
+      ariaCurrentWhenActive="page"><mat-icon>toys</mat-icon>
+      Merchandise
+      Shop</a>
+  </nav>
+</mat-toolbar>
+<!-- The routed views render in the <router-outlet>-->
+<router-outlet></router-outlet>

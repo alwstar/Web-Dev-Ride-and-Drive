@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Total cost: {{ data.price | currency }}</h1>
+
+<form #shippingForm="ngForm">
+    <mat-dialog-content class="mat-typography">
+        <mat-form-field>
+            <input matInput placeholder="Name" name="name" ngModel required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Address" name="address" ngModel required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Email" name="email" ngModel email required>
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <button mat-button type="submit" [mat-dialog-close]="onSubmit(shippingForm)"
+            [disabled]="!shippingForm.valid">Confirm</button>
+    </mat-dialog-actions>
+</form>

@@ -1,0 +1,14 @@
+<div class="cars-container">
+    <div *ngFor="let car of cars" class="car-card" (click)="navigateTo(car.id)">
+      <mat-card class="custom-card">
+        <mat-card-header>
+          <mat-card-title>{{ car.model_name }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="car.image_url" alt="Car Image">
+        <mat-card-content>
+          <p>{{ car.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  

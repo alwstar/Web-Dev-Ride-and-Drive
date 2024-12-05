@@ -1,0 +1,65 @@
+.car-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-height: calc(100vh - 104px); /* Set maximum height */
+    overflow: hidden; /* Prevent overflow outside the container */
+  }
+  
+  .car-detail {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto; /* Enable vertical scrolling */
+  
+    /* Remove scrollbar */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  
+    /* WebKit (Chrome, Safari, etc.) */
+    &::-webkit-scrollbar {
+      display: none; /* Hide scrollbar */
+    }
+  }
+  
+  .car-not-found {
+    text-align: center;
+    color: red;
+  }
+  
+  .car-card {
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #4D4063; /* Replace with your desired color */
+    /* Additional styling */
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add box-shadow for depth */
+  }
+
+  .car-card mat-card-header {
+    background-color: #2E3830; /* Customize header background color */
+  }
+  
+  .car-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .car-video {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  @media (min-width: 600px) {
+    .car-options {
+      flex-direction: row;
+    }
+  }
+  

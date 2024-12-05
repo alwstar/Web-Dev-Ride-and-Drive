@@ -1,0 +1,21 @@
+<div class="shop-container">
+    <h2>Shopping Cart</h2>
+    <div *ngIf="shoppingCart.length === 0">Your cart is empty.</div>
+        <div *ngFor="let item of shoppingCart">
+            {{ item.name }} - {{ item.quantity }} x {{ item.price | currency }} - Total: {{item.price * item.quantity | currency}}
+            <button mat-mini-fab color="primary" (click)="removeFromCart(item.id)"><mat-icon>delete</mat-icon></button>
+        </div>
+    <button mat-fab extended color="primary" (click)="clearCart()" *ngIf="shoppingCart.length > 0"><mat-icon>close</mat-icon>Clear Cart</button>
+    <button mat-fab extended color="accent" (click)="openOrderDialog()" *ngIf="shoppingCart.length > 0"><mat-icon>shopping_cart</mat-icon>Buy Now</button>
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="merch-items-container">
+    <div class="merch-item" *ngFor="let merchItem of merchItems" (click)="addToCart(merchItem)">
+        <h1>{{merchItem.name}}</h1>
+        <p>{{merchItem.price | currency}}</p>
+        <img [src]="merchItem.image_url" alt="Merch Image" class="merch-image">
+        <mat-divider></mat-divider>
+    </div>
+</div>

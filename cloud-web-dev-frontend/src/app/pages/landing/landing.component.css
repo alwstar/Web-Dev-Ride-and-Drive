@@ -1,0 +1,27 @@
+.home-container {
+    height: calc(100vh - 64px); /* Full viewport height */
+    background-image: url('/home_bg.jpg'); /* Path to your background image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+    align-items: flex-end; /* Align items to the bottom */
+    padding: 20px; /* Add some padding */
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+  }
+  
+  .explore-button {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 10px 20px; /* Button padding */
+    font-size: 16px; /* Button font size */
+    cursor: pointer; /* Change cursor to pointer */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline from link */
+  }
+  
+  .explore-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  

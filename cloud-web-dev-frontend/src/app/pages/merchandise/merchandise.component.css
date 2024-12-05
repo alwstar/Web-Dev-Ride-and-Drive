@@ -1,0 +1,40 @@
+.shop-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.merch-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.merch-item {
+    width: 100%;
+    max-width: 300px; /* Adjust max-width of merch items */
+    padding: 20px;
+    background-color: #2E3830; /* Background color of merch items */
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add box-shadow for depth */
+    text-align: center;
+}
+
+.merch-item:hover {
+    background-color: #4D4063; /* Background color of merch items */
+
+}
+
+.merch-image {
+    width: 100%; /* Ensure image fills its container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Limit the height of the image */
+    object-fit: cover; /* Ensure the image covers the container */
+    border-radius: 8px; /* Optional: Add border-radius */
+}
+
+/* Styling for buttons */
+button[mat-fab], button[mat-mini-fab] {
+    margin: 5px;
+}
+

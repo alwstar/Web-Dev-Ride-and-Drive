@@ -1,0 +1,42 @@
+.cars-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards */
+    padding: 20px; /* Padding around the container */
+  }
+  
+  .car-card {
+    width: 300px; /* Fixed width for the cards */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.3s ease-in-out; /* Smooth transform effect */
+  }
+  
+  .car-card:hover {
+    transform: scale(1.05); /* Slightly increase size on hover */
+  }
+  
+  mat-card {
+    height: 100%; /* Ensure the card takes the full height of its container */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+  }
+  
+  mat-card-content {
+    flex-grow: 1; /* Take up the remaining space */
+  }
+  
+  img {
+    object-fit: cover; /* Ensure the image covers the available space */
+    height: 200px; /* Fixed height for images */
+  }
+
+  .custom-card {
+    background-color: #2E3830; /* Light gray background */
+  }
+  
+  .custom-card:hover {
+    background-color: #4D4063; /* Change background on hover */
+  }
+  
+  

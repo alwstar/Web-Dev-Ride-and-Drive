@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Adjust alignment as needed */
+    gap: 20px; /* Adjust gap between elements */
+    padding: 20px;
+  }
+  
+  .side-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .selection {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 100%;
+    max-width: 400px; /* Adjust max-width of the selection area as needed */
+    padding: 20px;
+    background-color: #ffffff; /* Background color of the card */
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add box-shadow for depth */
+  }
+  
+  .sideways {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .radio-button {
+    margin-bottom: 10px;
+  }
+  
+  .bottom-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .image {
+    max-width: 100%; /* Ensure images don't exceed their container width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: Add border-radius to images */
+    background-color: whitesmoke;
+  }
+  

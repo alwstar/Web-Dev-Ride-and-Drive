@@ -1,0 +1,48 @@
+<div class="car-detail-container">
+    <div *ngIf="!car" class="car-not-found">
+      <h1>Car not found</h1>
+    </div>
+    <div *ngIf="car" class="car-detail">
+      <mat-card class="car-card">
+        <mat-card-header>
+          <mat-card-title>{{ car.model_name }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="car.image_url" alt="Car Image">
+        <mat-card-content>
+          <p>{{ car.description }}</p>
+          <div class="car-options">
+            <mat-form-field appearance="fill">
+              <mat-label>Rim</mat-label>
+              <mat-select [(value)]="selectedRimId" (selectionChange)="updatePrice()">
+                <mat-option *ngFor="let option of car.rimOptions" [value]="option.id">
+                  {{ option.name }}, {{ option.price | currency }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Exhaust</mat-label>
+              <mat-select [(value)]="selectedExhaustId" (selectionChange)="updatePrice()">
+                <mat-option *ngFor="let option of car.exhaustOptions" [value]="option.id">
+                  {{ option.name }}, {{ option.price | currency }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <p>Total Price: {{ totalPrice | currency }}</p>
+          <button mat-raised-button color="accent" [disabled]="!selectedExhaustId || !selectedRimId" (click)="openOrderDialog()">
+            <mat-icon>shopping_cart</mat-icon>
+            Buy Now
+          </button>
+        </mat-card-content>
+      </mat-card>
+  
+      <div class="car-video">
+        <iframe width="560" height="315" [src]="sanitizer.bypassSecurityTrustResourceUrl(car.youtube_slug)"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  

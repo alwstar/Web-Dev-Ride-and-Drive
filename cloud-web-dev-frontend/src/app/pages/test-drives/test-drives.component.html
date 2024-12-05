@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="side-panel">
+      <img *ngIf="carImageUrl" [src]="carImageUrl" alt="Car Image" class="image">
+    </div>
+    <div class="selection">
+      <div class="card">
+        <div class="sideways">
+          <div>
+            <label>Pick your Super Car:</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="selectedCarId" (change)="onCarChange()">
+              <mat-radio-button *ngFor="let car of cars" class="radio-button" [value]="car.id">{{car.model_name}}</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <mat-divider vertical="true"></mat-divider>
+          <div>
+            <label>Pick your desired track:</label>
+            <mat-radio-group class="radio-group" [(ngModel)]="selectedTrackId" (change)="onTrackChange()">
+              <mat-radio-button *ngFor="let track of tracks" class="radio-button" [value]="track.id">{{track.name}}</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <div class="bottom-line">
+          <button mat-fab extended color="accent" [disabled]="!selectedCarId || !selectedTrackId" (click)="openOrderDialog()">
+            <mat-icon>shopping_cart</mat-icon>
+            Book Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="side-panel">
+      <img *ngIf="trackImageUrl" [src]="trackImageUrl" alt="Track Image" class="image">
+    </div>
+  </div>
+  

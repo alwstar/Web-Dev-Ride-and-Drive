@@ -1,0 +1,366 @@
+services:
+  mysql-db-location:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_TCP_PORT: 3307
+    ports:
+    - 3307:3307
+    expose:
+      - 3307
+    volumes:
+      - mysql-data-location:/var/lib/mysql
+      - ./car-localization-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  node-app-location:
+    build:
+      context: ./car-localization-service
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: mysql-db-location
+      DB_PORT: 3307
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: mydatabase
+      PORT: 3020
+    restart: always
+    ports:
+      - "3020:3020"
+    depends_on:
+      mysql-db-location:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+#####################################################################
+
+  mysql-db-cars:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_TCP_PORT: 3308
+    ports:
+    - 3308:3308
+    expose:
+      - 3308
+    volumes:
+      - mysql-data-car:/var/lib/mysql
+      - ./car-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  node-app-cars:
+    build:
+      context: ./car-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3030
+      DB_HOST: mysql-db-cars
+      DB_PORT: 3308
+      DB_USER: root
+      DB_NAME: mydatabase
+      DB_PASSWORD: password
+      MINIO_HOST: cars-minio
+      MINIO_PORT: 9010
+      MINIO_USER: root
+      MINI_PASSWORD: password
+    restart: always
+    ports:
+      - "3030:3030"
+    depends_on:
+      mysql-db-cars:
+        condition: service_healthy
+      cars-minio:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  cars-minio:
+    image: minio/minio
+    restart: always
+    command: server /data --address ":9010" --console-address ":9011"
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=password
+    volumes:
+      - minio-data-car:/data
+    ports:
+      - 9010:9010
+      - 9011:9011
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9010/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+#####################################################################
+
+  mysql-db-merch:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_TCP_PORT: 3306
+    ports:
+    - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - mysql-data-merch:/var/lib/mysql
+      - ./merch-info-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  node-app-merch:
+    build:
+      context: ./merch-info-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3000
+      DB_HOST: mysql-db-merch
+      DB_PORT: 3306
+      DB_USER: root
+      DB_NAME: mydatabase
+      DB_PASSWORD: password
+      MINIO_HOST: merch-minio
+      MINIO_PORT: 9000
+      MINIO_USER: root
+      MINI_PASSWORD: password
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql-db-merch:
+        condition: service_healthy
+      merch-minio:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  merch-minio:
+    image: minio/minio
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=password
+    volumes:
+      - minio-data-merch:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+#####################################################################
+
+  mysql-db-orders:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_TCP_PORT: 3310
+    ports:
+    - 3310:3310
+    expose:
+      - 3310
+    volumes:
+      - mysql-data-orders:/var/lib/mysql
+      - ./order-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  node-app-orders:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: mysql-db-orders
+      DB_PORT: 3310
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: mydatabase
+      PORT: 3050
+    restart: always
+    ports:
+      - "3050:3050"
+    depends_on:
+      mysql-db-orders:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+#####################################################################
+
+  node-app-cart:
+    build:
+      context: ./shopping-cart-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3010:3010"
+    depends_on:
+      redis-cache:
+        condition: service_healthy
+    networks:
+      - mynetwork
+    environment:
+      - REDIS_HOST=redis-cache
+      - REDIS_PORT=6379
+      - PORT=3010
+
+  redis-cache:
+    image: "redis:alpine"
+    container_name: "redis-cache"
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+#####################################################################
+
+  mysql-db-tracks:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_TCP_PORT: 3309
+    ports:
+    - 3309:3309
+    expose:
+      - 3309
+    volumes:
+      - mysql-data-tracks:/var/lib/mysql
+      - ./track-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  node-app-tracks:
+    build:
+      context: ./track-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3040
+      DB_HOST: mysql-db-tracks
+      DB_PORT: 3309
+      DB_USER: root
+      DB_NAME: mydatabase
+      DB_PASSWORD: password
+      MINIO_HOST: tracks-minio
+      MINIO_PORT: 9020
+      MINIO_USER: root
+      MINI_PASSWORD: password
+    restart: always
+    ports:
+      - "3040:3040"
+    depends_on:
+      mysql-db-tracks:
+        condition: service_healthy
+      tracks-minio:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  tracks-minio:
+    image: minio/minio
+    restart: always
+    command: server /data --address ":9020" --console-address ":9021"
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=password
+    volumes:
+      - minio-data-tracks:/data
+    ports:
+      - 9020:9020
+      - 9021:9021
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9020/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+#####################################################################
+
+  angular-web-app:
+    build:
+      context: ./cloud-web-dev-frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - node-app-location
+      - node-app-cars
+      - node-app-merch
+      - node-app-orders
+      - node-app-cart
+      - node-app-tracks
+    networks:
+      - mynetwork
+
+volumes:
+  mysql-data-tracks:
+  minio-data-tracks:
+  mysql-data-orders:
+  mysql-data-merch:
+  minio-data-merch:
+  mysql-data-car:
+  minio-data-car:
+  mysql-data-location:
+
+networks:
+  mynetwork:
+    driver: bridge
